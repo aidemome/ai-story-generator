@@ -1,0 +1,249 @@
+<html><head><base href="https://ai-story-generator.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מחולל הרפתקאות קסום לילדים - עם תמונות עשירות</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+  
+  body {
+    font-family: 'Varela Round', sans-serif;
+    background: linear-gradient(135deg, #83a4d4, #b6fbff);
+    direction: rtl;
+    text-align: right;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  }
+  h1 {
+    color: #4a4a4a;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #5a5a5a;
+  }
+  input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  input:focus, select:focus {
+    border-color: #83a4d4;
+    box-shadow: 0 0 8px rgba(131, 164, 212, 0.5);
+  }
+  button {
+    background: linear-gradient(45deg, #83a4d4, #b6fbff);
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+  }
+  #story {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 15px;
+    white-space: pre-wrap;
+    font-size: 18px;
+    line-height: 1.6;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  }
+  .illustration {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  #progress-container {
+    width: 100%;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    margin-top: 20px;
+    overflow: hidden;
+  }
+  #progress-bar {
+    width: 0%;
+    height: 30px;
+    background: linear-gradient(45deg, #83a4d4, #b6fbff);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+  }
+  .hidden {
+    display: none;
+  }
+  .character {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: all 0.5s ease;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🌟 מחולל הרפתקאות קסום לילדים 🌟</h1>
+  
+  <label for="mainCharacter">שם הגיבור/ה הראשי/ת:</label>
+  <input type="text" id="mainCharacter" placeholder="למשל: נועה, איתי, לילך">
+
+  <label for="setting">מקום ההרפתקה:</label>
+  <input type="text" id="setting" placeholder="למשל: יער קסום, עיר עתיקה, כוכב לכת רחוק">
+
+  <label for="specialItem">חפץ קסום או מיוחד:</label>
+  <input type="text" id="specialItem" placeholder="למשל: מפה עתיקה, שרביט קסמים, מכשיר מסתורי">
+
+  <button onclick="startStoryGeneration()">🚀 צור הרפתקה מדהימה!</button>
+
+  <div id="progress-container" class="hidden">
+    <div id="progress-bar"></div>
+  </div>
+
+  <div id="story"></div>
+</div>
+
+<script>
+  let progress = 0;
+  const totalSteps = 5;
+  
+  function startStoryGeneration() {
+    progress = 0;
+    document.getElementById('progress-container').classList.remove('hidden');
+    document.getElementById('story').innerHTML = '';
+    updateProgress();
+    setTimeout(generateStory, 500);
+  }
+
+  function updateProgress() {
+    progress++;
+    const percentage = (progress / totalSteps) * 100;
+    document.getElementById('progress-bar').style.width = percentage + '%';
+  }
+
+  async function generateImage(prompt) {
+    // Using Unsplash API for demo purposes. In a real application, you'd use a more sophisticated image generation API.
+    const response = await fetch(`https://source.unsplash.com/600x400/?${encodeURIComponent(prompt)}`);
+    return response.url;
+  }
+
+  async function generateStory() {
+    const mainCharacter = document.getElementById('mainCharacter').value || 'דני';
+    const setting = document.getElementById('setting').value || 'יער הקסמים';
+    const specialItem = document.getElementById('specialItem').value || 'מפת אוצרות עתיקה';
+
+    const storyElement = document.getElementById('story');
+    storyElement.innerHTML = '';
+
+    const storyParts = [
+      {
+        text: `<h2>הרפתקה מופלאה ב${setting}</h2>
+
+<p>${mainCharacter} תמיד חלם/ה על הרפתקאות גדולות, אבל אף פעם לא חשב/ה שיום אחד באמת יצא/תצא לאחת כזו. הכל התחיל ביום רגיל לחלוטין, כשלפתע מצא/ה ${mainCharacter} ${specialItem} מסתורי בעליית הגג של סבא וסבתא.</p>`,
+        imagePrompt: `magical ${specialItem} in old attic`
+      },
+      {
+        text: `<p>"מה זה יכול להיות?" תהה/תה ${mainCharacter}, מסובב/ת את ה${specialItem} בידיו/ה. ברגע שנגע/ה בו, הרגיש/ה תחושה מוזרה, כאילו כוח בלתי נראה מושך אותו/ה. לפתע, בלי אזהרה, ${mainCharacter} מצא/ה את עצמו/ה ב${setting}!</p>
+
+<p>ה${setting} היה מקום מדהים ומסתורי. עצים ענקיים התנשאו לשמיים, ואורות קסומים ריצדו בין הענפים. ${mainCharacter} הבין/ה שה${specialItem} הביא אותו/ה לכאן למטרה מסוימת.</p>`,
+        imagePrompt: `magical ${setting} with glowing lights`
+      },
+      {
+        text: `<p>תוך כדי חקירת ה${setting}, ${mainCharacter} פגש/ה יצור קטן ומוזר בשם פיפ. פיפ סיפר ל${mainCharacter} שה${setting} בסכנה גדולה: הקסם שמחזיק אותו חי הולך ונחלש, וללא עזרה, כל היצורים הקסומים ייעלמו.</p>
+
+<p>"רק מי שמחזיק ב${specialItem} יכול להציל אותנו!" אמר פיפ בהתרגשות. "${mainCharacter}, את/ה חייב/ת לעזור לנו!"</p>
+
+<p>${mainCharacter} הרגיש/ה פחד, אבל גם התרגשות. זו הייתה ההזדמנות להיות גיבור/ה אמיתי/ת! יחד עם פיפ, יצא/ה ${mainCharacter} למסע מסוכן דרך ה${setting}, מתמודד/ת עם אתגרים ופותר/ת חידות בעזרת ה${specialItem}.</p>`,
+        imagePrompt: `magical creature in ${setting}`
+      },
+      {
+        text: `<p>הם טיפסו על הרים גבוהים, חצו נהרות סוערים, והתגנבו דרך מערות אפלות. בכל שלב, ה${specialItem} עזר להם להתגבר על מכשולים ולגלות סודות עתיקים.</p>
+
+<p>לבסוף, הגיעו ${mainCharacter} ופיפ למרכז ה${setting}, שם מצאו את מקור הקסם הנחלש. בעזרת האומץ שלו/ה וכוחו של ה${specialItem}, ${mainCharacter} הצליח/ה לחדש את הקסם ולהציל את ה${setting}.</p>`,
+        imagePrompt: `magical source of power in ${setting}`
+      },
+      {
+        text: `<p>כשהכל הסתיים, ה${setting} זהר באור קסום, יפה יותר מאי פעם. כל היצורים הודו ל${mainCharacter} על האומץ והנחישות.</p>
+
+<p>"את/ה גיבור/ה אמיתי/ת," אמר פיפ, עיניו נוצצות מדמעות שמחה.</p>
+
+<p>${mainCharacter} חייך/ה, מרגיש/ה גאווה וסיפוק. הוא/היא ידע/ה שזו הייתה רק ההרפתקה הראשונה מתוך רבות שיבואו, וכבר לא יכל/ה לחכות להרפתקה הבאה.</p>
+
+<p>כשחזר/ה הביתה, ${mainCharacter} ידע/ה שתמיד יישא/תישא בליבו/ה את הזיכרונות מה${setting} וה${specialItem} המופלא שפתח בפניו/ה עולם שלם של הרפתקאות.</p>
+
+<h2>סוף (או אולי רק ההתחלה?)</h2>`,
+        imagePrompt: `magical ${setting} glowing with renewed power`
+      }
+    ];
+
+    for (let i = 0; i < storyParts.length; i++) {
+      const part = storyParts[i];
+      const imageUrl = await generateImage(part.imagePrompt);
+      storyElement.innerHTML += part.text;
+      storyElement.innerHTML += `<div class="illustration"><img src="${imageUrl}" alt="${part.imagePrompt}" width="600" height="400"></div>`;
+      updateProgress();
+      window.scrollTo(0, document.body.scrollHeight);
+      if (i < storyParts.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
+
+    document.getElementById('progress-container').classList.add('hidden');
+    addFloatingCharacters();
+  }
+
+  function addFloatingCharacters() {
+    const characters = [
+      { emoji: '🧙‍♂️', name: 'wizard' },
+      { emoji: '🧚', name: 'fairy' },
+      { emoji: '🐉', name: 'dragon' },
+      { emoji: '🦄', name: 'unicorn' },
+      { emoji: '🧝‍♀️', name: 'elf' }
+    ];
+
+    characters.forEach((char, index) => {
+      const charElement = document.createElement('div');
+      charElement.className = 'character';
+      charElement.innerHTML = char.emoji;
+      charElement.style.fontSize = '30px';
+      charElement.style.left = `${Math.random() * 90}%`;
+      charElement.style.top = `${Math.random() * 90}%`;
+      document.body.appendChild(charElement);
+
+      setInterval(() => {
+        charElement.style.left = `${Math.random() * 90}%`;
+        charElement.style.top = `${Math.random() * 90}%`;
+      }, 5000 + (index * 1000));
+    });
+  }
+</script>
+</body></html>
